@@ -1,0 +1,9 @@
+max_file_size_kib = 0
+
+[github]
+app_id = ""
+private_key = ""
+
+[github.app_info]
+app_name = ""
+app_website = ""
