@@ -91,11 +91,14 @@ if not os.getenv('NONEBOT_PLUGIN_CELEIMPRTRC_DEV'):
                     await reg_fail_no_auth(bot, event)
                     return
                 listening_area = get_area(event)
+                new_host = {'host': host, 'owner': owner, 'repo': repo, 'path': path}
                 host_list = satori_listening_data[listening_area] or []
-                satori_listening_data[listening_area] = host_list + [
-                    {'host': host, 'owner': owner, 'repo': repo, 'path': path}]
                 full_repo = f'{host}/{owner}/{repo}/{path}'
-                await reg_success(bot, event, full_repo)
+                if new_host not in host_list:
+                    satori_listening_data[listening_area] = host_list + [new_host]
+                    await reg_success(bot, event, full_repo)
+                else:
+                    await reg_ignore_duplicated(bot, event, full_repo)
             case _:
                 await reg_ignored_invalid_command(bot, event)
 
@@ -108,6 +111,11 @@ if not os.getenv('NONEBOT_PLUGIN_CELEIMPRTRC_DEV'):
     async def reg_fail_no_auth(bot, event):
         await bot.send(event, SatoriMessage(auth_tip_msg))
         await bot.reaction_create(channel_id=event.channel.id, message_id=event.message.id, emoji='🔧')
+
+
+    async def reg_ignore_duplicated(bot, event, full_repo):
+        await bot.send(event, SatoriMessageSegment.text(f'{full_repo} already registered'))
+        await bot.reaction_create(channel_id=event.channel.id, message_id=event.message.id, emoji='📚')
 
 
     async def reg_ignored_invalid_command(bot, event):
