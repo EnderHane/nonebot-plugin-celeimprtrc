@@ -18,7 +18,7 @@ if not os.getenv('NONEBOT_PLUGIN_CELEIMPRTRC_DEV'):
     from .format import check_format_error, make_message
     from .download import download_with_size_limit
 
-    help_msg = 'usage: /impr_trc.reg github <Owner> <Repo> [Path]'
+    help_msg = 'usage: /impr-trc.reg github <Owner> <Repo> [Path]'
 
     auth_tip_msg = [
         SatoriMessageSegment.text('Cannot auth for Github App.'),
@@ -35,8 +35,8 @@ if not os.getenv('NONEBOT_PLUGIN_CELEIMPRTRC_DEV'):
         return event.channel.type == ChannelType.TEXT
 
 
-    reg_command_matcher = on_command(('impr_trc', 'reg'), rule=is_public_text)
-    unreg_command_matcher = on_command(('impr_trc', 'unreg'), rule=is_public_text)
+    reg_command_matcher = on_command(('impr-trc', 'reg'), rule=is_public_text)
+    unreg_command_matcher = on_command(('impr-trc', 'unreg'), rule=is_public_text)
 
     file_matcher = on_keyword({'file'}, rule=is_public_text)
 
