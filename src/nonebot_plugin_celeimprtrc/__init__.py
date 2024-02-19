@@ -21,7 +21,7 @@ if not os.getenv('NONEBOT_PLUGIN_CELEIMPRTRC_DEV'):
     help_msg = 'usage: /impr-trc.reg github <Owner> <Repo> [Path]'
 
     auth_tip_msg = [
-        SatoriMessageSegment.text('Cannot auth for Github App.'),
+        SatoriMessageSegment.text('Cannot auth for GitHub App.'),
         SatoriMessageSegment.br(),
         SatoriMessageSegment.text(
             f'Please confirm the app {plugin_config.github.app_info.app_name} is installed to the repo '),
@@ -82,12 +82,12 @@ if not os.getenv('NONEBOT_PLUGIN_CELEIMPRTRC_DEV'):
                 path = argv[3] if n > 3 else ''
                 host, owner, repo, *_ = argv[:]
                 if host != 'github':
-                    await bot.send(event, SatoriMessageSegment.text('Only Github is supported.'))
+                    await bot.send(event, SatoriMessageSegment.text('Only GitHub is supported.'))
                     return
                 auth_suc, is_path = await check_repo_path(owner, repo, path)
                 if not all((auth_suc, is_path)):
                     logger.trace(
-                        f'Cannot auth for Github App {plugin_config.github.app_info.app_name} on {owner}/{repo}/{path}')
+                        f'Cannot auth for GitHub App {plugin_config.github.app_info.app_name} on {owner}/{repo}/{path}')
                     await reg_fail_no_auth(bot, event)
                     return
                 listening_area = get_area(event)
