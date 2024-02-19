@@ -162,6 +162,7 @@ if not os.getenv('NONEBOT_PLUGIN_CELEIMPRTRC_DEV'):
         if errors:
             await file_denied_invalid_format(bot, errors, event)
             return
+        ignore_not_whitelisted = True
         for h in ld:
             owner = h['owner']
             repo = h['repo']
@@ -172,13 +173,19 @@ if not os.getenv('NONEBOT_PLUGIN_CELEIMPRTRC_DEV'):
                 old_content, old_sha = old or (None, None)
                 message = make_message(f'{event.user.name}({event.user.id}@{event.platform})', display, file_content,
                                        old_content)
-
                 await upload_to_repo(gh, owner, repo, f'{path}/{t}', file_content, message, old_sha)
                 await file_uploaded(bot, event)
+                ignore_not_whitelisted = False
+        if ignore_not_whitelisted:
+            await file_ignore_not_whitelisted(bot, event)
 
 
     async def file_uploaded(bot, event):
-        await bot.reaction_create(channel_id=event.channel.id, message_id=event.message.id, emoji='✏️')
+        await bot.reaction_create(channel_id=event.channel.id, message_id=event.message.id, emoji='🖊')
+
+
+    async def file_ignore_not_whitelisted(bot, event):
+        await bot.reaction_create(channel_id=event.channel.id, message_id=event.message.id, emoji='🏃')
 
 
     async def file_ignored_too_large(bot, event):
